@@ -1,17 +1,23 @@
+
 #include <iostream>
 
 
-struct Yzel
+struct list_elem
 {
 public:
 	int data;
-	Yzel* pNext;
-	Yzel(int data, Yzel* pNext = nullptr)
+	list_elem* pNext;
+	list_elem(int data, list_elem* pNext = nullptr)
 	{
 		this->data = data;
 		this->pNext = pNext;
 	}
-	~Yzel()
+	list_elem()
+	{
+		data = 0;
+		pNext = nullptr;
+	}
+	~list_elem()
 	{
 
 	}
@@ -35,33 +41,33 @@ public:
 	list();
 	~list();
 private:
-	Yzel* head;
+	list_elem* head;
 
 };
+
 
 
 void list::push_back(int data)
 {
 	if (head == nullptr)
 	{
-		head = new Yzel(data);
+		head = new list_elem(data);
 	}
 	else
 	{
-		Yzel* temp = head;
+		list_elem* temp = head;
 		while (temp->pNext != nullptr)
 		{
 			temp = temp->pNext;
 		}
-		temp->pNext = new Yzel(data);
+		temp->pNext = new list_elem(data);
 	}
 	size++;
 }
 
 void list::push_front(int data)
 {
-	Yzel* temp = head;
-	temp = new Yzel(data);
+	list_elem* temp = new list_elem(data);
 	temp->pNext = head;
 	head = temp;
 	size++;
@@ -69,13 +75,13 @@ void list::push_front(int data)
 }
 
 
-void list::deletion_first_elem()
+void list::deletion_first_elem() // добавить проверку, чтобы хед не был nullptr
 {
-	Yzel* temp = head;
+	list_elem* temp = head;
 	head = head->pNext;
 	delete temp;
-	size--;;
-}
+	size--;
+} 
 
 void list::deletion_all_list()
 {
@@ -85,7 +91,7 @@ void list::deletion_all_list()
 	}
 }
 
-void list::ydalenie_po_indexy(int index)
+void list::ydalenie_po_indexy(int index) // добавить проверку, чтобы хед не был nullptr
 {
 	if (index == 1)
 	{
@@ -93,13 +99,13 @@ void list::ydalenie_po_indexy(int index)
 	}
 	else
 	{
-		Yzel* temp = head;
+		list_elem* temp = head;
 		for (int i = 2; i < index; i++)
 		{
 			temp = temp->pNext;
 
 		}
-		Yzel* ydalaemiy_elem = temp->pNext;
+		list_elem* ydalaemiy_elem = temp->pNext;
 		temp->pNext = temp->pNext->pNext;
 		delete ydalaemiy_elem;
 		size--;
@@ -107,37 +113,42 @@ void list::ydalenie_po_indexy(int index)
 	}
 }
 
-void list::add_v_proizvolnoe_mesto(int indexE, int data)
+bool list::add_v_proizvolnoe_mesto(int indexE, int data) // добавить проверку, чтобы хед не был nullptr
 {
+	if (indexE < 0 || indexE >= this->size) {
+		return false;
+	}
 	if (indexE == 1)
 	{
 		push_front(data);
 	}
 	else
 	{
-		Yzel* temp = head;
+		list_elem* temp = head;
 		for (int i = 2; i < indexE; i++)
 		{
 			temp = temp->pNext;
 		}
 
-		Yzel* newYzel = new Yzel(data, temp->pNext);
+		list_elem* newlist_elem = new list_elem(data, temp->pNext);
 
-		temp->pNext = newYzel;
+		temp->pNext = newlist_elem;
 
 		size++;
 	}
+	return true;
 }
 
 void list::vivod(int index)
 {
 	int counter = 1;
-	Yzel* temp = head;
+	list_elem* temp = head;
 	while (temp != nullptr)
 	{
 		if (counter == index)
 		{
 			std::cout << temp->data << std::endl;
+			break;
 		}
 		temp = temp->pNext;
 		counter++;
@@ -146,7 +157,7 @@ void list::vivod(int index)
 
 void list::vivod_all_spisok()
 {
-	Yzel* temp = head;
+	list_elem* temp = head;
 	std::cout << std::endl;
 	while (temp != nullptr)
 	{
@@ -189,13 +200,6 @@ int main()
 	x.vivod_all_spisok();
 
 		
-
-
-}
-
-
-
-
 
 
 }
