@@ -1,4 +1,5 @@
-﻿#include <iostream>
+#include <iostream>
+
 
 struct Yzel
 {
@@ -21,19 +22,20 @@ class list
 {
 
 public:
-	Yzel* head;
 	int size;
 	void push_back(int data);
 	void push_front(int data);
-	void deletion_last_elem();
 	void deletion_first_elem();
 	void deletion_all_list();
+	void ydalenie_po_indexy(int index);
 	void add_v_proizvolnoe_mesto(int index, int data);
 	int GetSize() { return size + 1; }
 	void vivod(int index);
 	void vivod_all_spisok();
 	list();
-    ~list();
+	~list();
+private:
+	Yzel* head;
 
 };
 
@@ -66,10 +68,6 @@ void list::push_front(int data)
 
 }
 
-void list::deletion_last_elem()
-{
-
-}
 
 void list::deletion_first_elem()
 {
@@ -87,6 +85,28 @@ void list::deletion_all_list()
 	}
 }
 
+void list::ydalenie_po_indexy(int index)
+{
+	if (index == 1)
+	{
+		deletion_first_elem();
+	}
+	else
+	{
+		Yzel* temp = head;
+		for (int i = 2; i < index; i++)
+		{
+			temp = temp->pNext;
+
+		}
+		Yzel* ydalaemiy_elem = temp->pNext;
+		temp->pNext = temp->pNext->pNext;
+		delete ydalaemiy_elem;
+		size--;
+
+	}
+}
+
 void list::add_v_proizvolnoe_mesto(int indexE, int data)
 {
 	if (indexE == 1)
@@ -95,15 +115,15 @@ void list::add_v_proizvolnoe_mesto(int indexE, int data)
 	}
 	else
 	{
-		Yzel* previous = head;
-		for (int i = 2; i < indexE ; i++)
+		Yzel* temp = head;
+		for (int i = 2; i < indexE; i++)
 		{
-				previous = previous->pNext;
+			temp = temp->pNext;
 		}
 
-		Yzel* newNode = new Yzel(data, previous->pNext);
+		Yzel* newYzel = new Yzel(data, temp->pNext);
 
-		previous->pNext = newNode;
+		temp->pNext = newYzel;
 
 		size++;
 	}
@@ -112,14 +132,14 @@ void list::add_v_proizvolnoe_mesto(int indexE, int data)
 void list::vivod(int index)
 {
 	int counter = 1;
-	Yzel* current = head;
-	while (current != nullptr)
+	Yzel* temp = head;
+	while (temp != nullptr)
 	{
 		if (counter == index)
 		{
-		   std::cout << current->data << std::endl;
+			std::cout << temp->data << std::endl;
 		}
-		current = current->pNext;
+		temp = temp->pNext;
 		counter++;
 	}
 }
@@ -127,11 +147,13 @@ void list::vivod(int index)
 void list::vivod_all_spisok()
 {
 	Yzel* temp = head;
+	std::cout << std::endl;
 	while (temp != nullptr)
 	{
 		std::cout << temp->data << std::endl;
 		temp = temp->pNext;
 	}
+
 }
 
 
@@ -161,11 +183,15 @@ int main()
 	x.push_front(8);
 	x.push_front(9);
 	x.vivod_all_spisok();
-	std::cout << std::endl;
-	x.add_v_proizvolnoe_mesto(1,19);
+	x.add_v_proizvolnoe_mesto(1, 19);
+	x.vivod_all_spisok(); 
+	x.ydalenie_po_indexy(4);
 	x.vivod_all_spisok();
 
+		
 
+
+}
 
 
 
