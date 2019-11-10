@@ -1,5 +1,4 @@
-
-#include <iostream>
+﻿#include <iostream>
 
 
 struct list_elem
@@ -11,11 +10,6 @@ public:
 	{
 		this->data = data;
 		this->pNext = pNext;
-	}
-	list_elem()
-	{
-		data = 0;
-		pNext = nullptr;
 	}
 	~list_elem()
 	{
@@ -31,10 +25,10 @@ public:
 	int size;
 	void push_back(int data);
 	void push_front(int data);
-	void deletion_first_elem();
+	bool deletion_first_elem();
 	void deletion_all_list();
-	void ydalenie_po_indexy(int index);
-	void add_v_proizvolnoe_mesto(int index, int data);
+	bool ydalenie_po_indexy(int index);
+	bool add_v_proizvolnoe_mesto(int index, int data);
 	int GetSize() { return size + 1; }
 	void vivod(int index);
 	void vivod_all_spisok();
@@ -75,13 +69,21 @@ void list::push_front(int data)
 }
 
 
-void list::deletion_first_elem() // добавить проверку, чтобы хед не был nullptr
+bool list::deletion_first_elem() 
 {
-	list_elem* temp = head;
-	head = head->pNext;
-	delete temp;
-	size--;
-} 
+	if (head != nullptr)
+	{
+		list_elem* temp = head;
+		head = head->pNext;
+		delete temp;
+		size--;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 void list::deletion_all_list()
 {
@@ -91,31 +93,40 @@ void list::deletion_all_list()
 	}
 }
 
-void list::ydalenie_po_indexy(int index) // добавить проверку, чтобы хед не был nullptr
+bool list::ydalenie_po_indexy( int index) 
 {
-	if (index == 1)
+	if (head != nullptr && (index < 0 || index >= this->size))
 	{
-		deletion_first_elem();
+			if (index == 1)
+			{
+				deletion_first_elem();
+			}
+			else
+			{
+				list_elem* temp = head;
+				for (int i = 2; i < index; i++)
+				{
+					temp = temp->pNext;
+
+				}
+				list_elem* remove_elem = temp->pNext;
+				temp->pNext = temp->pNext->pNext;
+				delete remove_elem;
+				size--;
+
+			}
+			return true;
 	}
 	else
 	{
-		list_elem* temp = head;
-		for (int i = 2; i < index; i++)
-		{
-			temp = temp->pNext;
-
-		}
-		list_elem* ydalaemiy_elem = temp->pNext;
-		temp->pNext = temp->pNext->pNext;
-		delete ydalaemiy_elem;
-		size--;
-
+			return false;
 	}
 }
 
-bool list::add_v_proizvolnoe_mesto(int indexE, int data) // добавить проверку, чтобы хед не был nullptr
+bool list::add_v_proizvolnoe_mesto(int indexE, int data) 
 {
-	if (indexE < 0 || indexE >= this->size) {
+	if (indexE < 0 || indexE >= this->size)
+	{
 		return false;
 	}
 	if (indexE == 1)
@@ -141,30 +152,43 @@ bool list::add_v_proizvolnoe_mesto(int indexE, int data) // добавить п�
 
 void list::vivod(int index)
 {
-	int counter = 1;
-	list_elem* temp = head;
-	while (temp != nullptr)
+	if (head != nullptr)
 	{
-		if (counter == index)
+		int counter = 1;
+		list_elem* temp = head;
+		while (temp != nullptr)
 		{
-			std::cout << temp->data << std::endl;
-			break;
+			if (counter == index)
+			{
+				std::cout << temp->data << std::endl;
+				break;
+			}
+			temp = temp->pNext;
+			counter++;
 		}
-		temp = temp->pNext;
-		counter++;
+	}
+	else
+	{
+		std::cout << std::endl << "The list is empty"<< std::endl;
 	}
 }
 
 void list::vivod_all_spisok()
 {
-	list_elem* temp = head;
-	std::cout << std::endl;
-	while (temp != nullptr)
+	if (head != nullptr)
 	{
-		std::cout << temp->data << std::endl;
-		temp = temp->pNext;
+		list_elem* temp = head;
+		std::cout << std::endl;
+		while (temp != nullptr)
+		{
+			std::cout << temp->data << std::endl;
+			temp = temp->pNext;
+		}
 	}
-
+	else
+	{
+		std::cout << std::endl <<"The list is empty" << std::endl;
+	}
 }
 
 
@@ -187,19 +211,17 @@ list::~list()
 
 int main()
 {
+	
 	list x;
-	x.push_back(5);
 	x.push_back(6);
-	x.push_back(7);
 	x.push_front(8);
-	x.push_front(9);
 	x.vivod_all_spisok();
-	x.add_v_proizvolnoe_mesto(1, 19);
-	x.vivod_all_spisok(); 
-	x.ydalenie_po_indexy(4);
+	x.deletion_first_elem();
+	x.push_back(5);
 	x.vivod_all_spisok();
 
-		
+
+
 
 
 }
