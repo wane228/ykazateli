@@ -1,0 +1,104 @@
+#include <iostream>
+
+class list_elem
+{
+public:
+	int data;
+	list_elem * pNext;
+	list_elem *pPrev;
+	list_elem(int data, list_elem * pNext = nullptr, list_elem *pPrev = nullptr)
+	{
+		this->data = data;
+		this->pNext = pNext;
+		this->pPrev = pPrev;
+	}
+	~list_elem()
+	{
+
+	}
+};
+
+class list
+{
+public:
+	int size;
+	list_elem * head;
+	list_elem * last;
+	list();
+	~list();
+	void push_front(int data);
+	void push_back(int data);
+	void vivod_all_spisok();
+
+};
+
+void list::push_front(int data)
+{
+	if (head == nullptr)
+	{
+		head = new list_elem(data);
+		last = head;
+		size++;
+	}
+	else
+	{
+		list_elem * temp = head;
+		temp = new list_elem(data);
+		temp->pNext = head;
+		temp->pPrev = nullptr;
+		head->pPrev = temp;
+		last = head;
+		head = temp;
+		size++;
+	}
+}
+
+void list::push_back(int data)
+{
+	if (head == nullptr)
+	{
+			head = new list_elem(data);
+			last = head;
+			size++;
+	}
+	else
+	{
+		list_elem * temp = head;
+
+
+
+	}
+}
+
+void list::vivod_all_spisok()
+{
+	list_elem * temp = head;
+	while (temp != nullptr)
+	{
+		std::cout << temp->data << std::endl;
+		temp = temp->pNext;
+	}
+}
+
+list::list()
+{
+	head = nullptr;
+	last = nullptr;
+	size = 0;
+
+}
+
+list::~list()
+{
+}
+
+
+int main()
+{
+	list x;
+	x.push_front(1);
+	x.push_front(2);
+	x.push_front(3);
+	x.vivod_all_spisok();
+
+}
