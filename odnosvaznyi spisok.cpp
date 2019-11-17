@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 
 
 struct list_elem
@@ -11,12 +11,7 @@ public:
 		this->data = data;
 		this->pNext = pNext;
 	}
-	~list_elem()
-	{
-
-	}
-
-
+	~list_elem() { }
 };
 class list
 {
@@ -25,13 +20,13 @@ public:
 	int size;
 	void push_back(int data);
 	void push_front(int data);
-	bool deletion_first_elem();
-	void deletion_all_list();
-	bool ydalenie_po_indexy(int index);
-	bool add_v_proizvolnoe_mesto(int index, int data);
+	void remove_first_elem();
+	void remove_all_list();
+	void remove_by_index(int index);
+	void add_to_any_place(int index, int data);
 	int GetSize() { return size + 1; }
-	void vivod(int index);
-	void vivod_all_spisok();
+	void show_by_index(int index);
+	void show_all_list();
 	list();
 	~list();
 private:
@@ -65,94 +60,100 @@ void list::push_front(int data)
 	temp->pNext = head;
 	head = temp;
 	size++;
-
 }
 
 
-bool list::deletion_first_elem() 
+void list::remove_first_elem()
 {
-	if (head != nullptr)
+	if (size != 0)
 	{
 		list_elem* temp = head;
 		head = head->pNext;
 		delete temp;
 		size--;
-		return true;
 	}
 	else
 	{
-		return false;
+		return;
 	}
 }
 
-void list::deletion_all_list()
+void list::remove_all_list()
 {
 	while (size)
 	{
-		deletion_first_elem();
+		remove_first_elem();
 	}
 }
 
-bool list::ydalenie_po_indexy( int index) 
+void list::remove_by_index(int index)
 {
-	if (head != nullptr && (index < 0 || index >= this->size))
+	if (size == 0)
 	{
-			if (index == 1)
-			{
-				deletion_first_elem();
-			}
-			else
-			{
-				list_elem* temp = head;
-				for (int i = 2; i < index; i++)
-				{
-					temp = temp->pNext;
-
-				}
-				list_elem* remove_elem = temp->pNext;
-				temp->pNext = temp->pNext->pNext;
-				delete remove_elem;
-				size--;
-
-			}
-			return true;
+		return;
 	}
-	else
+	else if (index > size || index < 0)
 	{
-			return false;
+		std::cout << std::endl << "Choose element from 1 to " << size << std::endl;
+		return;
 	}
-}
-
-bool list::add_v_proizvolnoe_mesto(int indexE, int data) 
-{
-	if (indexE < 0 || indexE >= this->size)
+	else 
 	{
-		return false;
-	}
-	if (indexE == 1)
-	{
-		push_front(data);
-	}
-	else
-	{
-		list_elem* temp = head;
-		for (int i = 2; i < indexE; i++)
+		if (index == 1)
 		{
-			temp = temp->pNext;
+			remove_first_elem();
 		}
-
-		list_elem* newlist_elem = new list_elem(data, temp->pNext);
-
-		temp->pNext = newlist_elem;
-
-		size++;
+		else
+		{
+			list_elem* temp = head;
+			for (int i = 2; i < index; i++)
+			{
+				temp = temp->pNext;
+			}
+			list_elem* remove_elem = temp->pNext;
+			temp->pNext = temp->pNext->pNext;
+			delete remove_elem;
+			size--;
+		}
 	}
-	return true;
 }
 
-void list::vivod(int index)
+void list::add_to_any_place(int index, int data)
 {
-	if (head != nullptr)
+	if (index < 0 || index > size + 1)
+	{
+		std::cout << std::endl << "List elments are located in the range from 1 to " << size << std::endl;
+		return;
+	}
+	else if (index == size + 1)
+	{
+		push_back(data);
+		return;
+	}
+	else
+	{
+		if (index == 1)
+		{
+			push_front(data);
+
+		}
+		else
+		{
+			list_elem* temp = head;
+			for (int i = 2; i < index; i++)
+			{
+				temp = temp->pNext;
+			}
+			list_elem* newlist_elem = new list_elem(data, temp->pNext);
+			temp->pNext = newlist_elem;
+			size++;
+		}
+	}
+}
+
+void list::show_by_index(int index)
+{
+	if (size != 0)
 	{
 		int counter = 1;
 		list_elem* temp = head;
@@ -169,13 +170,13 @@ void list::vivod(int index)
 	}
 	else
 	{
-		std::cout << std::endl << "The list is empty"<< std::endl;
+		std::cout << std::endl << "The list is empty" << std::endl;
 	}
 }
 
-void list::vivod_all_spisok()
+void list::show_all_list()
 {
-	if (head != nullptr)
+	if (size != 0)
 	{
 		list_elem* temp = head;
 		std::cout << std::endl;
@@ -187,7 +188,7 @@ void list::vivod_all_spisok()
 	}
 	else
 	{
-		std::cout << std::endl <<"The list is empty" << std::endl;
+		std::cout << std::endl << "The list is empty" << std::endl;
 	}
 }
 
@@ -197,31 +198,17 @@ list::list()
 {
 	head = nullptr;
 	size = 0;
-
 }
 
 list::~list()
 {
-
-	deletion_all_list();
+	remove_all_list();
 }
-
 
 
 
 int main()
 {
-	
 	list x;
-	x.push_back(6);
-	x.push_front(8);
-	x.vivod_all_spisok();
-	x.deletion_first_elem();
-	x.push_back(5);
-	x.vivod_all_spisok();
-
-
-
-
-
+	x.show_all_list();
 }
