@@ -56,10 +56,18 @@ void list::push_back(int data)
 
 void list::push_front(int data)
 {
+	if (size == 0)
+	{
+		head = new list_elem(data);
+		size++;
+	}
+	else
+	{
 	list_elem* temp = new list_elem(data);
 	temp->pNext = head;
 	head = temp;
 	size++;
+	}
 }
 
 
