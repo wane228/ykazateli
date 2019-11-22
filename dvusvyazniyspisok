@@ -2,16 +2,13 @@
 
 
 
-
-
-
 class list_elem
 {
 public:
 	int data;
-	list_elem * pNext;
-	list_elem *pPrev;
-	list_elem(int data, list_elem * pNext = nullptr, list_elem *pPrev = nullptr)
+	list_elem* pNext;
+	list_elem* pPrev;
+	list_elem(int data, list_elem* pNext = nullptr, list_elem* pPrev = nullptr)
 	{
 
 		this->data = data;
@@ -29,41 +26,28 @@ public:
 
 
 
-
-
-
-
 class list
 
 {
+private:
+	list_elem* head;
+	list_elem* last;
 public:
 
 	int size;
-	list_elem * head;
-	list_elem * last;
 	list();
 	~list();
 	void push_front(int data);
 	void push_back(int data);
-	void vivod_all_spisok();
+	int GetSize() { return size; }
+	void show_all_list();
+	void show_by_index(int index);
+	void remove_first_elem();
+	void remove_all_list();
+	void remove_by_index(int index);
+	void add_to_any_place(int index, int data);
 };
 
-
-
-
-
-
-
-void list::vivod_all_spisok()
-{
-	list_elem* temp = head;
-	std::cout << std::endl;
-	while (temp != nullptr)
-	{
-		std::cout << temp->data << std::endl;
-		temp = temp->pNext;
-	}
-}
 
 list::list()
 {
@@ -72,13 +56,23 @@ list::list()
 	size = 0;
 }
 
-
 list::~list()
 {
-
+	remove_all_list();
 }
 
-
+void list::show_all_list()
+{
+	int i = 1;
+	list_elem* temp = head;
+	while (temp != nullptr)
+	{
+		std::cout << "[" << i << "]: " << temp->data << " ";
+		temp = temp->pNext;
+		i++;
+	}
+	std::cout << std::endl;
+}
 
 void list::push_front(int data)
 {
@@ -113,6 +107,190 @@ void list::push_back(int data)
 	}
 }
 
+void list::remove_first_elem()
+{
+	if (size != 0)
+	{
+		list_elem* temp = head;
+		head = head->pNext;
+		delete temp;
+		size--;
+	}
+	else
+	{
+		return;
+	}
+}
+
+void list::remove_all_list()
+{
+	while (size)
+	{
+		remove_first_elem();
+	}
+}
+
+void list::remove_by_index(int index)
+{
+	if (size == 0)
+	{
+		std::cout << std::endl << "The list is empty" << std::endl;
+		return;
+	}
+	else if (index > size || index < 0)
+	{
+		std::cout << std::endl << "Choose element from 1 to " << size << std::endl;
+		return;
+	}
+	else
+	{
+		if (index == 1)
+		{
+			remove_first_elem();
+		}
+		else
+		{
+			if (index <= GetSize() / 2)
+			{
+				list_elem* temp = head;
+				for (int i = 2; i < index; i++)
+				{
+					temp = temp->pNext;
+				}
+				list_elem* remove_elem = temp->pNext;
+				temp->pNext = temp->pNext->pNext;
+				delete remove_elem;
+			}
+			else
+			{
+				list_elem* temp = last;
+				int i;
+				if ((GetSize() / 2) % 2)
+				{
+				     i = 1;
+				}
+				else
+				{
+					 i = 2;
+				}
+				while (i < index)
+				{
+						temp = temp->pPrev;
+						i++;
+				}
+				
+				list_elem* remove_elem = temp->pNext;
+				temp->pNext = temp->pNext->pNext;
+				delete remove_elem;
+			}
+			size--;
+		}
+	}
+}
+
+void list::add_to_any_place(int index, int data)
+{
+	if (index < 0 || index > size + 1)
+	{
+		std::cout << std::endl << "List elments are located in the range from 1 to " << size << std::endl;
+		return;
+	}
+	else if (index == size + 1)
+	{
+		push_back(data);
+		return;
+	}
+	else
+	{
+		if (index == 1)
+		{
+			push_front(data);
+
+		}
+		else
+		{
+			if (index <= GetSize() / 2)
+			{
+				list_elem* temp = head;
+				for (int i = 2; i < index; i++)
+				{
+					temp = temp->pNext;
+				}
+				list_elem* newlist_elem = new list_elem(data, temp->pNext);
+				temp->pNext = newlist_elem;
+			}
+			else
+			{
+				int i;
+				if ((GetSize() / 2) % 2)
+				{
+					i = 1;
+				}
+				else
+				{
+					i = 2;
+				}
+				list_elem* temp = last;
+				while (i < index)
+				{
+					temp = temp->pPrev;
+					i++;
+				}
+				list_elem* newlist_elem = new list_elem(data, temp->pNext);
+				temp->pNext = newlist_elem;
+			}
+		}
+	}
+}
+
+void list::show_by_index(int index)
+{
+	if (index < 0)
+	{
+		std::cout << "Choose element from 1 to " << size << std::endl;
+		return;
+	}
+	if (size != 0)
+	{
+		if (index <= GetSize() / 2)
+		{
+			int counter = 1;
+			list_elem* temp = head;
+			while (temp != nullptr)
+			{
+				if (counter == index)
+				{
+					std::cout << "[" << index << "]: " << temp->data << std::endl;
+					break;
+				}
+				temp = temp->pNext;
+				counter++;
+			}
+		}
+		else
+		{
+			list_elem* temp = last;
+			int counter = 0;
+			int difference_size_and_index = size - index;
+			while (1)
+			{
+				if (counter == difference_size_and_index)
+				{
+					std::cout <<"[" << index << "]: " << temp->data << std::endl;
+					break;
+				}
+				temp = temp->pPrev;
+				counter++;
+			}
+		}
+	}
+	else
+	{
+		std::cout << "The list is empty\n";
+	}
+}
+
+
 
 int main()
 {
@@ -120,11 +298,9 @@ int main()
 	x.push_front(1);
 	x.push_front(2);
 	x.push_front(3);
-	x.vivod_all_spisok();
 	x.push_front(4);
-	x.vivod_all_spisok();
-	x.push_back(5);
-	x.vivod_all_spisok();
-	x.push_back(6);
-	x.vivod_all_spisok();
+	x.push_front(5);
+	x.show_all_list();
+	x.show_by_index(3);
+	x.show_by_index(-5);
 }
