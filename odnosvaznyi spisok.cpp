@@ -98,6 +98,7 @@ void list::remove_by_index(int index)
 {
 	if (size == 0)
 	{
+		std::cout << std::endl << "The list is empty" << std::endl;
 		return;
 	}
 	else if (index > size || index < 0)
