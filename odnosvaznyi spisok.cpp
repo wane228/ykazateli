@@ -24,7 +24,7 @@ public:
 	void remove_all_list();
 	void remove_by_index(int index);
 	void add_to_any_place(int index, int data);
-	int GetSize() { return size + 1; }
+	int GetSize() { return size; }
 	void show_by_index(int index);
 	void show_all_list();
 	list();
@@ -161,6 +161,11 @@ void list::add_to_any_place(int index, int data)
 
 void list::show_by_index(int index)
 {
+	if (index < 0)
+	{
+		std::cout << "List elments are located in the range from 1 to " << size << std::endl;
+		return;
+	}
 	if (size != 0 && index > 0)
 	{
 		int counter = 1;
