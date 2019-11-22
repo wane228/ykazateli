@@ -161,7 +161,7 @@ void list::add_to_any_place(int index, int data)
 
 void list::show_by_index(int index)
 {
-	if (size != 0)
+	if (size != 0 && index > 0)
 	{
 		int counter = 1;
 		list_elem* temp = head;
