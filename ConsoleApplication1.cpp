@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -20,11 +21,7 @@ public:
 	}
 	~Tree_Elem()
 	{
-		data = 0;
-		key = 0;
-		left = nullptr;
-		right = nullptr;
-		prev = nullptr;
+
 	}
 };
 
@@ -41,8 +38,9 @@ public:
 	void add_elem(int key, int data);
 	void show_all_elem();
 	void delete_all_branch();
-	Tree_Elem* findByIndex(int key);
+	Tree_Elem* find_by_key(int key);
 	void delete_by_key(int key);
+	void show_by_key(int key);
 };
 
 
@@ -70,6 +68,11 @@ void Tree::add_elem(int key, int data)
 		Tree_Elem* temp = head;
 		while (temp != nullptr)
 		{
+			if (key == temp->key)
+			{
+				temp->data = NewElem->data;
+				break;
+			}
 			if (key > temp->key)
 			{
 				if (temp->right != nullptr)
@@ -109,29 +112,9 @@ void Tree::add_elem(int key, int data)
 
 void Tree::show_all_elem()
 {
-	Tree_Elem* temp = head;
-	if (head != nullptr)
-	{
-		cout << head->key << "||" << head->data << " ";
-		temp = temp->left;
-		while (temp != nullptr)
-		{
-			cout << temp->key << "||" << temp->data << " ";
-			temp = temp->left;
-		}
-		temp = head;
-		temp = temp->right;
-		while (temp != nullptr)
-		{
-			cout << endl << temp->key << "||" << temp->data << " ";
-			temp = temp->right;
-		}
-	}
-	else
-	{
-		cout << endl << "Tree is empty" << endl;
-	}
+
 }
+
 
 void Tree::delete_all_branch()
 {
@@ -167,11 +150,11 @@ void Tree::delete_all_branch()
 			head = nullptr;
 			delete temp;
 		}
+		size--;
 	}
-	size = 0;
 }
 
-Tree_Elem* Tree::findByIndex(int key)
+Tree_Elem* Tree::find_by_key(int key)
 {
 	Tree_Elem* temp = head;
     if (head != nullptr) {
@@ -213,37 +196,118 @@ Tree_Elem* Tree::findByIndex(int key)
 
 void Tree::delete_by_key(int key)
 {
-	Tree_Elem* dell_elem = findByIndex(key);
-	Tree_Elem* dell_elem_prev = dell_elem->prev;
-	Tree_Elem* dell_elem_left = dell_elem->left;
-	Tree_Elem* dell_elem_right = dell_elem->right;
+	Tree_Elem* rem_elem = find_by_key(key);
+	Tree_Elem* rem_elem_prev = rem_elem->prev;
+	Tree_Elem* rem_elem_left = rem_elem->left;
+	Tree_Elem* rem_elem_right = rem_elem->right;
 	Tree_Elem* temp;
-
-	if (dell_elem_left != nullptr && dell_elem_right != nullptr)
+	if (rem_elem != nullptr)
 	{
-		dell_elem_prev->right = dell_elem_right;
-		temp = dell_elem_right;
-		while (temp->left != nullptr)
+		if (rem_elem != head)
 		{
-			temp = temp->left;
+			if (rem_elem_left != nullptr && rem_elem_right != nullptr)
+			{
+				if (rem_elem_prev->right == rem_elem)
+				{
+					rem_elem_prev->right = rem_elem_right;
+					rem_elem_right->prev = rem_elem_prev;
+				}
+				if (rem_elem_prev->left == rem_elem)
+				{
+					rem_elem_prev->left = rem_elem_right;
+					rem_elem_right->prev = rem_elem_prev;
+				}
+				temp = rem_elem_right;
+				while (temp->left != nullptr)
+				{
+					temp = temp->left;
+				}
+				temp->left = rem_elem_left;
+				rem_elem_left->prev = temp;
+				delete rem_elem;
+			}
+			else if (rem_elem_right == nullptr && rem_elem_left != nullptr)
+			{
+				if (rem_elem_prev->right == rem_elem)
+				{
+					rem_elem_prev->right = rem_elem_left;
+					rem_elem_left->prev = rem_elem_prev;
+				}
+				if (rem_elem_prev->left == rem_elem)
+				{
+					rem_elem_prev->left = rem_elem_left;
+					rem_elem_left->prev = rem_elem_prev;
+				}
+				delete rem_elem;
+			}
+			else if (rem_elem_right != nullptr && rem_elem_left == nullptr)
+			{
+				if (rem_elem_prev->right == rem_elem)
+				{
+					rem_elem_prev->right = rem_elem_right;
+					rem_elem_right->prev = rem_elem_prev;
+				}
+				if (rem_elem_prev->left == rem_elem)
+				{
+					rem_elem_prev->left = rem_elem_right;
+					rem_elem_right->prev = rem_elem_prev;
+				}
+				delete rem_elem;
+			}
+			else if (rem_elem_left == nullptr && rem_elem_right == nullptr)
+			{
+				if (rem_elem_prev->right == rem_elem)
+				{
+					rem_elem_prev->right = nullptr;
+				}
+				if (rem_elem_prev->left == rem_elem)
+				{
+					rem_elem_prev->left = nullptr;
+				}
+				delete rem_elem;
+			}
+			size--;
 		}
-		temp->left = dell_elem_left;
+		else if (rem_elem == head)
+		{
+			cout << "Head cannot be removed!!!" << endl;
+		}
 	}
-	else if (dell_elem_right == nullptr)
+	else
 	{
+		cout << "Elemet not found!!!" << endl;
+	}
 
+}
+
+void Tree::show_by_key(int key)
+{
+	Tree_Elem* temp = find_by_key(key);
+	if (temp != nullptr)
+	{
+		cout << temp->key << "||" << temp->data << endl;
+	}
+	else
+	{
+		cout << "Elemet not found!!!" << endl;
 	}
 }
+
+
 
 
 int main()
 {
 	Tree x;
 	x.add_elem(20, 1);
-	x.add_elem(19, 2);
-	x.add_elem(21, 3);
+	x.add_elem(25, 3);
+	x.add_elem(26, 4);
+	x.add_elem(23, 5);
+	x.add_elem(28, 6);
+	x.add_elem(27, 7);
+	x.add_elem(24, 8);
+	x.add_elem(22, 9);
 	x.show_all_elem();
-	//x.delete_all_branch();
-	//x.show_all_elem();
-	cout << endl << x.findByIndex(21)->data;
+
+	
 }
