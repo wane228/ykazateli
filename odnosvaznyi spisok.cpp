@@ -101,7 +101,7 @@ void list::remove_by_index(int index)
 		std::cout << std::endl << "The list is empty" << std::endl;
 		return;
 	}
-	else if (index > size || index < 0)
+	else if (index > size || index <= 0)
 	{
 		std::cout << "Choose element from 1 to " << size << std::endl;
 		return;
