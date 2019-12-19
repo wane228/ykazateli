@@ -99,9 +99,8 @@ void list::push_back(int data)
 	}
 	else
 	{
-		list_elem* temp = new list_elem(data, last);
+		list_elem* temp = new list_elem(data, nullptr, last);
 		last->pNext = temp;
-		temp->pNext = nullptr;
 		last = temp;
 		size++;
 	}
