@@ -137,7 +137,7 @@ void list::remove_by_index(int index) // работает
 		std::cout << std::endl << "The list is empty" << std::endl;
 		return;
 	}
-	else if (index > size || index < 0)
+	else if (index > size || index <= 0)
 	{
 		std::cout << std::endl << "Choose element from 1 to " << size << std::endl;
 		return;
@@ -191,7 +191,7 @@ void list::remove_by_index(int index) // работает
 
 void list::add_to_any_place(int index, int data) // работает
 {
-	if (index < 0 || index > size + 1)
+	if (index <= 0 || index > size + 1)
 	{
 		std::cout << std::endl << "List elments are located in the range from 1 to " << size << std::endl;
 		return;
@@ -244,7 +244,7 @@ void list::add_to_any_place(int index, int data) // работает
 
 void list::show_by_index(int index) // работает
 {
-	if (index < 0)
+	if (index <= 0)
 	{
 		std::cout << "Choose element from 1 to " << size << std::endl;
 		return;
