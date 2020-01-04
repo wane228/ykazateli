@@ -61,7 +61,7 @@ list::~list()
 	remove_all_list();
 }
 
-void list::show_all_list()
+void list::show_all_list() // работает
 {
 	int i = 1;
 	list_elem* temp = head;
@@ -74,7 +74,7 @@ void list::show_all_list()
 	std::cout << std::endl;
 }
 
-void list::push_front(int data)
+void list::push_front(int data) // работает
 {
 	if (size == 0)
 	{
@@ -91,7 +91,7 @@ void list::push_front(int data)
 	}
 }
 
-void list::push_back(int data)
+void list::push_back(int data) // работает
 {
 	if (size == 0)
 	{
@@ -106,22 +106,23 @@ void list::push_back(int data)
 	}
 }
 
-void list::remove_first_elem()
+void list::remove_first_elem() // работает
 {
-	if (size != 0)
+	list_elem* temp = head;
+	if (size != 0 && size != 1)
 	{
-		list_elem* temp = head;
 		head = head->pNext;
 		delete temp;
 		size--;
 	}
-	else
+	else if (size == 1)
 	{
-		return;
+		delete temp;
+		size--;
 	}
 }
 
-void list::remove_all_list()
+void list::remove_all_list() // работает
 {
 	while (size)
 	{
@@ -129,14 +130,14 @@ void list::remove_all_list()
 	}
 }
 
-void list::remove_by_index(int index)
+void list::remove_by_index(int index) // работает
 {
 	if (size == 0)
 	{
 		std::cout << std::endl << "The list is empty" << std::endl;
 		return;
 	}
-	else if (index > size || index < 0)
+	else if (index > size || index <= 0)
 	{
 		std::cout << std::endl << "Choose element from 1 to " << size << std::endl;
 		return;
@@ -146,6 +147,14 @@ void list::remove_by_index(int index)
 		if (index == 1)
 		{
 			remove_first_elem();
+		}
+		else if (index == size)
+		{
+			list_elem* temp = last;
+			list_elem* temp_ = temp->pPrev;
+			temp_->pNext = nullptr;
+			last = temp_;
+			delete temp;
 		}
 		else
 		{
@@ -157,29 +166,22 @@ void list::remove_by_index(int index)
 					temp = temp->pNext;
 				}
 				list_elem* remove_elem = temp->pNext;
-				temp->pNext = temp->pNext->pNext;
+				list_elem* remove_elem_ = temp->pNext->pNext;
+				temp->pNext = remove_elem_;
+				remove_elem_->pPrev = temp;
 				delete remove_elem;
 			}
 			else
 			{
 				list_elem* temp = last;
-				int i;
-				if ((GetSize() / 2) % 2)
+				for (int i = size; i > index + 1; i--)
 				{
-				     i = 1;
+					temp = temp->pPrev;
 				}
-				else
-				{
-					 i = 2;
-				}
-				while (i < index)
-				{
-						temp = temp->pPrev;
-						i++;
-				}
-				
-				list_elem* remove_elem = temp->pNext;
-				temp->pNext = temp->pNext->pNext;
+				list_elem* remove_elem = temp->pPrev;
+				list_elem* remove_elem_ = temp->pPrev->pPrev;
+				temp->pPrev = remove_elem_;
+				remove_elem_->pNext = temp;
 				delete remove_elem;
 			}
 			size--;
@@ -187,9 +189,9 @@ void list::remove_by_index(int index)
 	}
 }
 
-void list::add_to_any_place(int index, int data)
+void list::add_to_any_place(int index, int data) // работает
 {
-	if (index < 0 || index > size + 1)
+	if (index <= 0 || index > size + 1)
 	{
 		std::cout << std::endl << "List elments are located in the range from 1 to " << size << std::endl;
 		return;
@@ -211,42 +213,45 @@ void list::add_to_any_place(int index, int data)
 			if (index <= GetSize() / 2)
 			{
 				list_elem* temp = head;
-				for (int i = 2; i < index; i++)
+				for (int i = 1; i < index - 1; i++)
 				{
 					temp = temp->pNext;
 				}
-				list_elem* newlist_elem = new list_elem(data, temp->pNext);
+				list_elem* newlist_elem = new list_elem(data);
+				list_elem* newlist_elem_ = temp->pNext;
 				temp->pNext = newlist_elem;
+				newlist_elem->pPrev = temp;
+				newlist_elem->pNext = newlist_elem_;
+				newlist_elem_->pPrev = newlist_elem;
 			}
 			else
 			{
-				int i;
-				if ((GetSize() / 2) % 2)
-				{
-					i = 1;
-				}
-				else
-				{
-					i = 2;
-				}
 				list_elem* temp = last;
-				while (i < index)
+				for (int i = size; i > index; i--)
 				{
 					temp = temp->pPrev;
-					i++;
 				}
-				list_elem* newlist_elem = new list_elem(data, temp->pNext);
-				temp->pNext = newlist_elem;
+				list_elem* newlist_elem = new list_elem(data);
+				list_elem* newlist_elem_ = temp->pPrev;
+				temp->pPrev = newlist_elem;
+				newlist_elem->pNext = temp;
+				newlist_elem->pPrev = newlist_elem_;
+				newlist_elem_->pNext = newlist_elem;
 			}
 		}
 	}
-}
+} 
 
-void list::show_by_index(int index)
+void list::show_by_index(int index) // работает
 {
-	if (index < 0)
+	if (index <= 0)
 	{
 		std::cout << "Choose element from 1 to " << size << std::endl;
+		return;
+	}
+	if (index == size + 1)
+	{
+		std::cout << std::endl << "List elments are located in the range from 1 to " << size << std::endl;
 		return;
 	}
 	if (size != 0)
@@ -275,7 +280,7 @@ void list::show_by_index(int index)
 			{
 				if (counter == difference_size_and_index)
 				{
-					std::cout <<"[" << index << "]: " << temp->data << std::endl;
+					std::cout << "[" << index << "]: " << temp->data << std::endl;
 					break;
 				}
 				temp = temp->pPrev;
@@ -287,7 +292,7 @@ void list::show_by_index(int index)
 	{
 		std::cout << "The list is empty\n";
 	}
-}
+} 
 
 
 
@@ -299,7 +304,9 @@ int main()
 	x.push_front(3);
 	x.push_front(4);
 	x.push_front(5);
+	x.push_front(6);
 	x.show_all_list();
-	x.show_by_index(3);
-	x.show_by_index(-5);
+	x.remove_by_index(-1);
+	x.show_all_list();
+
 }
