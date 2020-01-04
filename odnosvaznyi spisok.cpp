@@ -308,5 +308,5 @@ int main()
 	x.show_all_list();
 	x.remove_by_index(-1);
 	x.show_all_list();
-
+ 
 }
