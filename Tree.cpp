@@ -35,12 +35,13 @@ private:
 public:
 	Tree();
 	~Tree();
-	void add_elem(int key, int data);
-	void show_all_elem();
-	void delete_all_branch();
-	Tree_Elem* find_by_key(int key);
-	void delete_by_key(int key);
-	void show_by_key(int key);
+	void add_elem(unsigned int key, int data);
+	void show_all_elem(Tree_Elem* head);
+	void show_all_elem1() {	show_all_elem(head); cout << endl;}
+	void delete_all_tree();
+	Tree_Elem* find_by_key(unsigned int key);
+	void delete_by_key(unsigned int key);
+	void show_by_key(unsigned int key);
 };
 
 
@@ -52,9 +53,9 @@ Tree::Tree()
 }
 Tree::~Tree()
 {
-	delete_all_branch();
+	delete_all_tree();
 }
-void Tree::add_elem(int key, int data)
+void Tree::add_elem(unsigned int key, int data)
 {
 	Tree_Elem* NewElem = new Tree_Elem();
 	NewElem->data = data;
@@ -110,13 +111,25 @@ void Tree::add_elem(int key, int data)
 }
 
 
-void Tree::show_all_elem()
+void Tree::show_all_elem(Tree_Elem* temp)
 {
-
+		cout << temp->data << " ";
+		if (temp->left != nullptr)
+		{
+			show_all_elem(temp->left);
+		}
+		if (temp->right != nullptr)
+		{
+			show_all_elem(temp->right);
+		}
+		
 }
 
 
-void Tree::delete_all_branch()
+
+
+
+void Tree::delete_all_tree()
 {
 	Tree_Elem* temp = head;
 	Tree_Elem* temp_prev;
@@ -154,7 +167,7 @@ void Tree::delete_all_branch()
 	}
 }
 
-Tree_Elem* Tree::find_by_key(int key)
+Tree_Elem* Tree::find_by_key(unsigned int key)
 {
 	Tree_Elem* temp = head;
     if (head != nullptr) {
@@ -194,7 +207,7 @@ Tree_Elem* Tree::find_by_key(int key)
 	
 }
 
-void Tree::delete_by_key(int key)
+void Tree::delete_by_key(unsigned int key)
 {
 	Tree_Elem* rem_elem = find_by_key(key);
 	Tree_Elem* rem_elem_prev = rem_elem->prev;
@@ -280,7 +293,7 @@ void Tree::delete_by_key(int key)
 
 }
 
-void Tree::show_by_key(int key)
+void Tree::show_by_key(unsigned int key)
 {
 	Tree_Elem* temp = find_by_key(key);
 	if (temp != nullptr)
@@ -307,7 +320,9 @@ int main()
 	x.add_elem(27, 7);
 	x.add_elem(24, 8);
 	x.add_elem(22, 9);
-	x.show_all_elem();
+	x.show_all_elem1();
+	x.delete_by_key(20);
+	x.show_all_elem1();
 
 	
 }
