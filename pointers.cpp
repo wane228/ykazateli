@@ -46,6 +46,7 @@ int main()
 	zapolnenie_massiva( &stroki, &stolbi, array1);
 	vivod_massiva(&stroki, &stolbi, array1);
 	ydalenie_massiva(&stroki, array1);
-
+ 
+	
 }
 
