@@ -113,7 +113,7 @@ void list::remove_first_elem() // работает
 	{
 		head = head->pNext;
 		delete temp;
-		size--;
+		size--; 
 	}
 	else if (size == 1)
 	{
