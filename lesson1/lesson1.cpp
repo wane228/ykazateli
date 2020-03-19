@@ -76,8 +76,8 @@ int main()
 				}
 				devicename.clear();
 			}
+			data_time.clear();
 		}
-		data_time.clear();
 	}
 }
 
