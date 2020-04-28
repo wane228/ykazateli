@@ -634,12 +634,6 @@ bool longnum::checkfomistake()
 	{
 		i = 1;
 	}
-	if (cin.fail())
-	{
-		cin.clear();
-		cout << "You can use only numbers!!" << endl;
-		return false;
-	}
 	if (usernum == "")
 	{
 		cout << "Your number is empty!!!" << endl;
