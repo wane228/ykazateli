@@ -133,8 +133,8 @@ void test1(int x, int y)
 string test2()
 {
     //this_thread::sleep_for(chrono::milliseconds(500));
-    cout << "8=D\n";
-    return "8=D\n";
+    cout << ":-^)\n";
+    return ":-^)\n";
 }
 
 int main()
