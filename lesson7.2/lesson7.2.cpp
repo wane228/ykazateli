@@ -148,5 +148,6 @@ int main()
         tp.addTask([&]() {tp.end(); });
     });
     cout << tp.getStatus(4) << endl;
+    tp.run(3);
     th.join();
 }
