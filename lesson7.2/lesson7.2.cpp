@@ -75,6 +75,7 @@ public:
                     catch (const std::exception&)
                     {
                         cout << "Error: exeption was called" << endl;
+                        return;
                     }           
                 }));
         }
