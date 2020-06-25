@@ -61,11 +61,11 @@ bool NextSet(vector<int>& a, int n)
     if (j == -1)
     {
         return false;
-    } // больше перестановок нет
+    } 
     int k = n - 1;
     while (a[j] >= a[k]) { k--; }
     swap(a, j, k);
-    int l = j + 1, r = n - 1; // сортируем оставшуюся часть последовательности
+    int l = j + 1, r = n - 1;
     while (l < r)
     {
         swap(a, l++, r--);
